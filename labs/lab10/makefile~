@@ -1,0 +1,10 @@
+CXX = g++
+CXXFLAGS = -Wall
+
+lab11: Registration.o lab11.cpp
+	$(CXX) $(CXXFLAGS) -c lab11.cpp -o lab11
+
+Registration.o: Registration.h Registration.cpp
+	$(CXX) $(CXXFLAGS) -c Registration.cpp
+ 
+run1: ./lab11

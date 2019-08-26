@@ -1,0 +1,30 @@
+/****************************************
+File: proj2.cpp
+Project: CMSC 202 Project 2, Spring 2018
+Author: Dane Magbuhos
+Date: 
+
+
+
+
+
+******************************************/
+
+#include "Dragon.h"
+#include "Game.h"
+
+#include <iostream>
+#include <cstdlib>
+#include <string>
+#include <vector>
+using namespace std;
+
+int main () {
+
+  Game newGame; // Invokes Game Class
+  
+  // Invokes start game function
+  newGame.StartGame();
+
+  return 0;
+}

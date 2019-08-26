@@ -1,0 +1,198 @@
+/*
+File: MailHouse.cpp
+Project: CMSC 202 Project 4, Spring 2018
+Author: Dane Magbuhos
+Date: 4/22/18
+E-mail: mag4@umbc.edu
+
+Description: This contains the function implementations
+for the MailHouse.h file. This file loads, sorts, and outputs 
+the provided mail information from the text file.
+
+*/
+
+#include "MailHouse.h"
+
+#include <cstdlib>
+#include <stdlib.h>
+
+using namespace std;
+
+
+MailHouse::MailHouse()
+{
+  // empty body constructor
+}
+
+int MailHouse::loadMail(char* file)
+{
+  ifstream inputStream; // Input value stream variable 
+
+  int upsCap;         // UPS Capacity
+  int fedexCap;       // FedEx Capacity
+  int carrierInt;     // Mail delivery service (integer version)
+  int mailInt;        // Mail type (integer version)
+  int result = 0;     // Was the load mail a success?
+
+  string carrier;     // Mail delivery service (string version)     
+  string mail;        // Mail type (string version) 
+  string sender;      // Person/Group sending mail
+  string receiver;    // Person/Group getting mail
+  string weight;      // Weight of mail (string version)
+
+  float mailWeight;   // Weight of mail (float version)
+  float upsSpeed;     // UPS Speed
+  float fedexSpeed;   // FedEx Speed
+  float letterCost;   // Letter Base Cost 
+  float packageCost;  // Package Base Cost
+
+  carrierType c;      // Enumerated carrierType
+  mailType m;         // Enumerated mailType
+
+  Mail *letter;       // Letter pointer
+  Mail *package;      // Package pointer
+  Carrier *UPSPtr;    // UPS pointer
+  Carrier *FedExPtr;  // FedEx pointer
+
+  // Opens the file
+  inputStream.open(file);
+
+  // Reads in first line of mail information
+  inputStream >> upsCap;
+  inputStream >> fedexCap;
+  inputStream >> upsSpeed;
+  inputStream >> fedexSpeed;
+  inputStream >> letterCost;
+  inputStream >> packageCost;
+
+  // Traverses through rest of file and reads in mail data
+  while(getline(inputStream,carrier,','))
+  {
+    getline(inputStream,mail,',');
+    getline(inputStream,sender,',');
+    getline(inputStream,receiver,',');
+    getline(inputStream,weight);
+
+    // Converts string data into their corresponding datatypes
+    carrierInt = atoi(carrier.c_str());
+    mailInt = atoi(mail.c_str());
+    mailWeight = strtof((weight).c_str(),0);
+
+    // Converts the integer version of carrier to its corresponding enum value
+    c = carrierType(carrierInt);
+    m = mailType(mailInt);
+
+    // Creates the letter object
+    if(m == LETTER)
+    {
+      letter = new Letter(carrierInt, sender, receiver, mailWeight, letterCost); 
+      m_mail.push_back(letter);
+    }
+
+    // Creates the package object
+    else if(m == PACKAGE)
+    {
+      package = new Package(carrierInt, sender, receiver, mailWeight, packageCost);
+      m_mail.push_back(package);
+    }
+  }
+
+  // Closes file
+   inputStream.close();
+
+  cout <<"File is closed"<<endl;
+
+  UPSPtr = new Ups();
+  FedExPtr = new FedEx();
+
+  // Sets up maximum capacity and UPS speed rate
+  UPSPtr->setMaxCapacity(upsCap);
+  UPSPtr->setRate(upsSpeed);
+  m_carriers.push_back(UPSPtr);
+
+  // Sets up maximum capacity and FedEx speed rate
+  FedExPtr->setMaxCapacity(fedexCap);
+  FedExPtr->setRate(fedexSpeed);
+  m_carriers.push_back(FedExPtr);
+
+  result = 1;
+
+  return result;
+
+}
+
+int MailHouse::fillCarriers()
+{
+  int upsMail = 0;      // Index for Ups carrier
+  int fedexMail = 1;    // Index for Fedex carrier
+  int result = 0;       // Are there mail items in both UPS/FedEx carriers?
+  int upsResult = 0;    // Are there any mail in UPS carrier?
+  int fedexResult = 0;  // Are there any mail in Fedex carrier?
+  
+  // Traverses through mail vector and sorts/populates carriers
+  for(unsigned int i = 0; i < m_mail.size(); i++)
+  {
+    
+    // Inserts mail pointer to UPS object carrier
+    if(m_mail[i]->getCarrier() == upsMail)
+    {
+      upsResult = m_carriers[upsMail]->insert(m_mail[i]);
+    } 
+    
+    // Inserts mail Pointer to FedEx object carrier
+    else if(m_mail[i]->getCarrier() == fedexMail)
+    {
+      fedexResult = m_carriers[fedexMail]->insert(m_mail[i]);
+    }
+
+  } 
+
+  // Only outputs contents if both carriers are filled
+  if((upsResult == 1) && (fedexResult == 1)) 
+  {
+    // Outputs the sorted mail from carriers
+    for(unsigned int j = 0; j < m_carriers.size(); j++)
+    {
+      cout << *m_carriers[j] << endl;
+      m_carriers[j] -> contents();
+      result = 1;
+    }
+  }
+
+ return result;
+
+}
+
+
+int MailHouse::deliverMail()
+{
+  int Ups = 0;    // Ups index
+  int FedEx = 1;  // FedEx index 
+  int result = 0; // Was the delivery a success?
+
+  // Access mail objects in carriers
+  result = m_carriers[Ups] -> deliver();
+  result = m_carriers[FedEx] -> deliver();
+  
+  return result;
+
+}
+
+int MailHouse::cleanUp()
+{
+
+  // Clears out carrier vector
+  for(unsigned int i = 0; i < m_carriers.size(); i++)
+  {
+    delete m_carriers[i];
+  }
+
+  // Clears out the mail vector
+  for(unsigned int j = 0; j < m_mail.size(); j++)
+  {
+    delete m_mail[j];
+  }
+
+  return 0;
+
+}

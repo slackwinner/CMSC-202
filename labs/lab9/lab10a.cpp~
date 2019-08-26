@@ -1,0 +1,47 @@
+#include <iostream>
+using namespace std;
+
+//Use this file to implement the templated swap function
+//Implement the templated swap function here
+
+template <class T>
+void Swap(T& a, T& b)
+{
+  T temp;
+  temp = a;
+  a = b;
+  b = temp;
+
+}
+
+
+
+
+
+
+
+int main() {
+  int i1 = 1, i2 = 2;
+  float f1 = 1.1, f2 = 2.2;
+  char c1 = 'a', c2 = 'b';
+
+  cout << "Before passing data to function template.\n";
+  cout << "i1 = " << i1 << "\ni2 = " << i2;
+  cout << "\nf1 = " << f1 << "\nf2 = " << f2;
+  cout << "\nc1 = " << c1 << "\nc2 = " << c2;
+
+  Swap(i1, i2);
+  Swap(f1, f2);
+  Swap(c1, c2);
+
+  cout << "\n\nAfter passing data to function template.\n";
+  cout << "i1 = " << i1 << "\ni2 = " << i2;
+  cout << "\nf1 = " << f1 << "\nf2 = " << f2;
+  cout << "\nc1 = " << c1 << "\nc2 = " << c2;
+
+
+  cout << endl;
+
+  return 0;
+}
+

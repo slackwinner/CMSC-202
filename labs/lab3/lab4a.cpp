@@ -1,0 +1,43 @@
+/* 
+
+Dane Magbuhos
+lab4a
+
+*/
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+void buyGems(int &intitalGem, int &inputGem);
+
+
+int main(){
+
+  int gems = 100;
+  int inputGem = 0;
+  string command;
+
+  cout <<" You currently have " << gems << " gems" << endl;
+  cout <<" What would you like to do? " << endl;
+  getline (cin, command);
+
+  if (command == "Purchase gems"){
+    buyGems(gems, inputGem);
+    cout <<"You have purchased " << inputGem << endl;
+    cout <<" You now have " << gems << endl;   
+
+    }
+  else
+    cout << "Invalid Command" << endl;
+}
+
+void buyGems(int &intialGem, int &inputGem){
+
+  cout <<"How many gems would you like to purchase?"<<endl;
+  cin >> inputGem;
+
+  intialGem =  intialGem + inputGem;
+
+
+}

@@ -1,0 +1,43 @@
+/*
+ File: lab1.cpp
+ Project: N/A (i.e. Lab Assignment)
+ Author: Dane Magbuhos
+ Date: 1/31/18
+ E-mail: mag4@umbc.edu
+ Description: This program asks the user for name input and three grades.
+              In addition, this program calcualtes the average of the 
+	      three grades.
+ */
+
+#include <iostream>
+using namespace std;
+
+int main(){
+
+  char firstName[80];
+  double firstGrade;
+  double secondGrade;
+  double thirdGrade;
+  double average;
+  double sum;
+  int numOfGrades = 3;
+
+  cout << "Enter your first name: " << endl;
+  cin >> firstName;
+
+  cout << "Enter your first grade: " << endl;
+  cin >> firstGrade;
+
+  cout << "Enter your second grade: " << endl;
+  cin >> secondGrade;
+
+  cout << "Enter your third grade: " << endl;
+  cin >> thirdGrade;
+
+  sum = firstGrade + secondGrade + thirdGrade;
+  average = sum / numOfGrades;
+
+  cout << firstName << " your average is " << average << endl;
+
+  return 0;
+}

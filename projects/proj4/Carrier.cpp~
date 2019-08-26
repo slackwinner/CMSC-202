@@ -1,0 +1,49 @@
+#include "Carrier.h"
+
+#include <iostream>
+
+using namespace std;
+
+Carrier::Carrier()
+{
+
+}
+
+Carrier::~Carrier()
+{
+
+}
+
+int Carrier::insert(Mail* mail)
+{
+
+  int result = 1; // Did the carrier reach max capacity?
+  int currentStorage;
+
+  m_storage.push_back(mail);
+
+  currentStorage = m_storage.size();
+
+  if(currentStorage > m_max_capacity)
+    result = 0;
+
+  return result;
+}
+
+void Carrier::setMaxCapacity(int maxCap)
+{
+  m_max_capacity = maxCap;
+}
+
+void Carrier::setRate(float rate)
+{
+  m_delivery_rate = rate;
+}
+
+ostream &operator<<(ostream& sout,const Carrier& carrier)
+{
+
+  carrier.print(sout);
+  
+  return sout;
+}

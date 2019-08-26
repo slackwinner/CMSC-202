@@ -1,0 +1,46 @@
+#include "Package.h"
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+Package::Package() : Mail(1,"sender","recipient",0.0,0.0)
+{
+  // empty body constructor
+
+}
+
+Package::Package(int carrier, string sender, string recipient, float size, float baseCost)
+  : Mail(carrier, sender, recipient, size, baseCost)
+{
+  // empty body constructor
+}
+
+Package::~Package()
+{
+
+
+
+}
+
+string Package::toString()
+{
+
+  stringstream p;
+  
+  // Converts package object into a string object
+  p << "---------------------" << endl;
+  p << "Package: " << endl;
+  p << "To: " << m_recipient << endl;
+  p << "From " << m_sender << endl;
+  p << "Weight: " << m_size << " lbs " <<  endl;
+  p << "---------------------" << endl;
+  p << "---------------------" << endl;
+
+  string concatString = p.str();
+
+  return concatString;
+
+
+}
